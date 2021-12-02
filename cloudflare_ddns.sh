@@ -5,7 +5,7 @@ ZoneID="cfe5f1a934234ed38103209f3d3bf363"
 
 # DNS Record ID
 # https://api.cloudflare.com/#dns-records-for-a-zone-list-dns-records
-# curl -X GET "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records?type=A&name=$DNSRecordName&page=1&per_page=1&order=type&match=all" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" | grep -o '"id":"[^.*"$]*' | sed 's/"id":"//'
+# curl -X GET "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records?type=A&name=$DNSRecordName&page=1&per_page=1&order=type&match=all" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" | sed -E 's/.*"id":"?([^,"]*
 DNSRecordID="8889875987214b53a0662fd34cfbe984"
 
 # Auth Email:
@@ -40,7 +40,7 @@ if [ "$DNSRecordContent" == "$KNOWN_IP" ]; then
 else
   # Update DNS record in Cloudflare:
   # https://api.cloudflare.com/#dns-records-for-a-zone-update-dns-record
-  SUCCESS=$(curl -X PUT "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records/$DNSRecordID" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" --data '{"type":"A","name":"'$DNSRecordName'","content":"'$DNSRecordContent'","ttl":1,"proxied":false}' | grep -o '"success":[true|false]*' | sed 's/"success"://')
+  SUCCESS=$(curl -X PUT "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records/$DNSRecordID" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" --data '{"type":"A","name":"'$DNSRecordName'","content":"'$DNSRecordContent'","ttl":1,"proxied":false}' | sed -E 's/.*"success":"?([^,"]*)"?.*/\1/')
   # Exit if curl failed
   if [ $? -ne 0 ]; then
     exit 1
