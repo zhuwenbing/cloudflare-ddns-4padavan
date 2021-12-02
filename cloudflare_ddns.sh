@@ -5,7 +5,7 @@ ZoneID="cfe5f1a934234ed38103209f3d3bf363"
 
 # DNS Record ID
 # https://api.cloudflare.com/#dns-records-for-a-zone-list-dns-records
-# curl -X GET "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records?type=A&name=$DNSRecordName&page=1&per_page=1&order=type&match=all" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" | sed -E 's/.*"id":"?([^,"]*
+# curl -X GET "https://api.cloudflare.com/client/v4/zones/$ZoneID/dns_records?type=A&name=$DNSRecordName&page=1&per_page=1&order=type&match=all" -H "X-Auth-Email: $AuthEmail" -H "X-Auth-Key: $AuthKey" -H "Content-Type: application/json" | sed -E 's/.*"id":"?([^,"]*)"?.*/\1/'
 DNSRecordID="8889875987214b53a0662fd34cfbe984"
 
 # Auth Email:
